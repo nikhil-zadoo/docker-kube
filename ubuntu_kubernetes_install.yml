@@ -1,1 +1,24 @@
-- import_playbook: ubuntu_docker_install.yml 
+- import_playbook: ubuntu_docker_install.yml
+- hosts: localhost
+  gather_facts: no
+  tasks:
+  - name: adding key for kubernetes repo
+    apt_key:
+     url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+     state: present
+
+  - name: adding the kubernetes repository
+    apt_repository:
+     repo: deb http://apt.kubernetes.io/ kubernetes-xenial main
+     state: present
+
+  - name: installing kubernetes
+    apt:
+     name: "{{ item }}" 
+     state: present
+     update_cache: yes
+    with_items:
+    - kubelet
+    - kubeadm
+    - kubectl
+    - kubernetes-cni
