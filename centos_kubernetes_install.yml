@@ -15,14 +15,29 @@
      policy: targeted
      state: permissive
 
+  - name: adding the GPG key for the kubernetew repo
+    rpm_key:
+     state: present
+     key: "{{ item }}"
+    with_items:
+    - https://packages.cloud.google.com/yum/doc/yum-key.gpg
+    - https://packages.cloud.google.com/yum/doc/rpm-package-key.gpg
+
   - name: installing kubernetes
     yum:
      name: "{{ item }}"
      state: present
+     update_cache: yes
     with_items:
     - kubelet
     - kubeadm
     - kubectl
+
+  - name: enabling and starting kubelet
+    systemd:
+     name: kubelet
+     enabled: yes
+     state: started
 
   - name: correcting iptables config
     copy:
