@@ -16,7 +16,7 @@
     - docker-selinux
     - docker-engine-selinux
     - docker-engine
-
+   
   - name: installing required packages
     yum:
      name: "{{ item }}"
