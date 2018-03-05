@@ -1,42 +1,9 @@
 - hosts: localhost
   gather_facts: no
   tasks:
-  - name: remove any obsolete versions
-    yum:
-     name: "{{ item }}"
-     state: absent
-    with_items:
-    - docker
-    - docker-client
-    - docker-client-latest
-    - docker-common
-    - docker-latest
-    - docker-latest-logrotate
-    - docker-logrotate
-    - docker-selinux
-    - docker-engine-selinux
-    - docker-engine
-   
-  - name: installing required packages
-    yum:
-     name: "{{ item }}"
-     state: present
-    with_items:
-    - yum-utils
-    - device-mapper-persistent-data
-    - lvm2
-
-  - name:
-    raw: yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
-
-  - name: Add Docker GPG key.
-    rpm_key:
-     key: https://download.docker.com/linux/centos/gpg
-     state: present
-
   - name: installing docker
     yum:
-     name: docker-ce
+     name: docker
      state: present
      update_cache: yes
 
